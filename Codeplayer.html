@@ -1,0 +1,132 @@
+<html>
+    <head>
+        <title>Codeplayer</title>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="jquery-ui\jquery-ui\jquery-ui.js"></script>
+        <link href="jquery-ui\jquery-ui\jquery-ui.css" rel="stylesheet">
+        <style>
+            #logo{
+                color: red;
+                float: left;
+                font-size: 25px;
+                font-weight: bold;
+            }
+            #topbar{    
+                height: 30px;
+                width: 100%;
+                background-color: #EDEDED;
+                margin: 0;
+                padding: 3px;
+                border-bottom: 1px solid #808080;
+            }
+            body{
+                margin: 0;
+                font-family: sans-serif;
+                padding: 0;
+            }
+            .button{
+                float: left;
+                font-size: 18px;
+                border: 0.5px solid #808080;
+                padding: 4.3px 10px ;
+            }
+            .button:hover{
+                cursor: pointer;
+            }
+            #buttoncontainer{
+                width: 350px;
+                margin: 0 auto;
+                position: relative;
+                left: 55px;
+            }
+            #html{
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+            #output{
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+            .active{
+                background-color: #E8F2FF;
+            }
+            .highlightedbutton{
+                background-color: #E4E4E4;
+            }
+            textarea{
+                width: 50%;
+                resize: none;
+                border-top: none;
+                border-bottom: none;
+            }
+            .section{
+                float: left;
+                width: 50%;
+                border-left: none;
+            }
+            iframe{
+                border: none;
+            }
+            .hidden{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="topbar">
+            <div id="logo">
+                CODEPLAYER
+            </div>
+
+            <div id="buttoncontainer">
+                <div class="button active" id="html">
+                    Html
+                </div>
+                <div class="button" id="css">
+                    CSS
+                </div>
+                <div class="button" id="javascript">
+                    Javascript
+                </div>
+                <div class="button active" id="output">
+                    Output
+                </div>
+            </div>
+        </div>
+
+        <div id="bodycontainer">
+            <textarea id="htmlsection" class="section"><p id="paragraph">HI There!</p></textarea>
+            <textarea id="csssection" class="section hidden">p { color: green;}</textarea>
+            <textarea id="javascriptsection" class="section hidden">var a=6*7;document.getElementById("paragraph").innerHTML +="<br>" + a; </textarea>
+            <iframe id="outputsection" class="section"></iframe>
+        </div>
+    
+        <script>
+            function UpdateOut(){
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>"
+                +$("#csssection").val()+"</style></head><body>"
+                +$("#htmlsection").val()+"</body></html>");
+                document.getElementById("outputsection").contentWindow.eval($("#javascriptsection").val());
+            }
+            $(".button").hover(function(){
+                $(this).addClass("highlightedbutton");
+            }, function(){
+                $(this).removeClass("highlightedbutton");
+            });
+            $(".button").click(function(){
+                $(this).toggleClass("active");
+                $(this).removeClass("highlightedbutton")
+                var secid= $(this).attr("id") + "section";
+                $("#"+secid).toggleClass("hidden");
+                var Activeno = 4 -$(".hidden").length;
+                $(".section").width(($(window).width()/Activeno)-4);
+            });
+            $(".section").height($(window).height()-$("#topbar").height()-9);
+            $(".section").width(($(window).width()/2)-4);
+            UpdateOut();
+            $("textarea").on("change keyup paste",function(){
+                UpdateOut();
+            });
+        </script>
+    </body>
+</html>
