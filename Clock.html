@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>Clock</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="600" height="600">
+
+        </canvas>
+        <script>
+
+            function setTime()
+            {
+            var myCanvas = document.getElementById("myCanvas");
+            var context = myCanvas.getContext("2d");
+            context.beginPath();
+            context.fillStyle = "black";
+            context.arc(300,300,300,0,2*Math.PI);
+            context.fill();
+            
+            context.fillStyle = "white";
+            context.beginPath();
+            context.arc(300,300,10,0,2*Math.PI);
+            context.fill();
+
+            context.font = "30px arail";
+
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            
+            for(var i=1 ;i<=12;i++)
+            {
+                context.fillText(i,300 + (270*Math.sin(i*2*Math.PI/12)),300 -(270*Math.cos(i*2*Math.PI/12)));
+            }
+
+            var date = new Date();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+
+            var fullhours = hours % 12 + minutes/60 + seconds/3600;
+            
+            var hoursAngle = fullhours * 2*Math.PI/12;
+            var minutesAngle = minutes * 2*Math.PI/60;
+            var secondsAngle = seconds * 2*Math.PI/60;
+
+            context.strokeStyle= "white";
+            context.moveTo(300,300);
+            context.lineTo(300 + (180*Math.sin(hoursAngle)), 300 -(180*Math.cos(hoursAngle)));
+            context.lineWidth = 5;
+            context.stroke();
+
+            context.moveTo(300,300);
+            context.lineTo(300 + (210*Math.sin(minutesAngle)), 300 -(210*Math.cos(minutesAngle)));
+            context.lineWidth = 3;
+            context.stroke();
+
+            context.moveTo(300,300);
+            context.lineTo(300 + (260*Math.sin(secondsAngle)), 300 -(260*Math.cos(secondsAngle)));
+            context.lineWidth = 2;
+            context.stroke();
+            }
+
+            setInterval(setTime, 1000);
+            
+        </script>
+    </body>
+</html>
